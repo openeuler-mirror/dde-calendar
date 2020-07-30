@@ -2,7 +2,7 @@
 
 Name:           deepin-calendar
 Version:        5.6.1
-Release:        3
+Release:        4
 Summary:        Calendar for Deepin Desktop Environment
 License:        GPLv3+
 URL:            https://github.com/linuxdeepin/dde-calendar
@@ -53,5 +53,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{repo}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{repo}.svg
 
 %changelog
+* Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.6.1-4
+- fix spec
+
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.6.1-3
 - Package init
