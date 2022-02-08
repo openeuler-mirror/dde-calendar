@@ -1,10 +1,11 @@
 Name:           dde-calendar
 Version:        5.7.0.5
-Release:        1
+Release:        2
 Summary:        Calendar for Deepin Desktop Environment
 License:        GPLv3+
 URL:            https://github.com/linuxdeepin/%{name}
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0:         modify-QPainterPath-error.patch
 
 Provides:      deepin-calendar
 Obsoletes:     deepin-calendar
@@ -12,6 +13,7 @@ Obsoletes:     deepin-calendar
 BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: qt5-devel
+BuildRequires: qt5-qtbase-private-devel
 
 BuildRequires: dtkcore-devel
 BuildRequires: dtkwidget-devel
@@ -22,7 +24,7 @@ BuildRequires: pkgconfig(dframeworkdbus)
 %{summary}.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 # help find (and prefer) qt5 utilities, e.g. qmake, lrelease
@@ -47,6 +49,9 @@ popd
 %{_datadir}/applications/%{name}.desktop
 
 %changelog
+* Tue Feb 08 2022 liweigang <liweiganga@uniontech.com> - 5.7.0.5-2
+- fix build error
+
 * Wed Jul 07 2021 weidong <weidong@uniontech.com> - 5.7.0.5-1
 - Update to 5.7.0.5
 
