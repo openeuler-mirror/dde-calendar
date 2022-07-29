@@ -1,40 +1,42 @@
+%define pkgrelease  1
+%if 0%{?openeuler}
+%define specrelease %{pkgrelease}
+%else
+## allow specrelease to have configurable %%{?dist} tag in other distribution
+%define specrelease %{pkgrelease}%{?dist}
+%endif
+
 Name:           dde-calendar
-Version:        5.7.0.5
-Release:        2
-Summary:        Calendar for Deepin Desktop Environment
-License:        GPLv3+
-URL:            https://github.com/linuxdeepin/%{name}
+Version:        5.8.10
+
+Release:        %{specrelease}
+Summary:        Calendar is a smart daily planner to schedule all things in life
+License:        GPLv3
+URL:            https://github.com/linuxdeepin/dde-calendarr
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-Patch0:         modify-QPainterPath-error.patch
 
-Provides:      deepin-calendar
-Obsoletes:     deepin-calendar
-
-BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: qt5-devel
 BuildRequires: qt5-qtbase-private-devel
-
-BuildRequires: dtkcore-devel
+BuildRequires: dtkgui-devel
 BuildRequires: dtkwidget-devel
-BuildRequires: pkgconfig(dtkgui)
+BuildRequires: deepin-gettext-tools
 BuildRequires: pkgconfig(dframeworkdbus)
+BuildRequires: gtest-devel
+BuildRequires: gmock
 
 %description
 %{summary}.
 
 %prep
-%autosetup -p1
+%autosetup
 
 %build
-# help find (and prefer) qt5 utilities, e.g. qmake, lrelease
 export PATH=%{_qt5_bindir}:$PATH
-# cmake_minimum_required version is too high
 sed -i "s|^cmake_minimum_required.*|cmake_minimum_required(VERSION 3.0)|" $(find . -name "CMakeLists.txt")
-mkdir build && pushd build
-%cmake ../ -DCMAKE_BUILD_TYPE=Release -DAPP_VERSION=%{version} -DVERSION=%{version}
-
-%make_build
+mkdir build && pushd build 
+%cmake -DCMAKE_BUILD_TYPE=Release ../  -DAPP_VERSION=%{version} -DVERSION=%{version} 
+%make_build  
 popd
 
 %install
@@ -44,11 +46,18 @@ popd
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name}
-%{_datadir}/%{name}/translations/*.qm
-%{_datadir}/dbus-1/services/com.deepin.Calendar.service
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/%{name}/translations/*.qm
+%{_datadir}/deepin-manual/manual-assets/application/dde-calendar/calendar/*
+%{_datadir}/dbus-1/services/*.service
+/etc/xdg/autostart/dde-calendar-service.desktop
+%{_datadir}/dde-calendar/data/*
+/usr/lib/deepin-daemon/dde-calendar-service
 
 %changelog
+* Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.8.10-1
+- update to 5.8.10
+
 * Tue Feb 08 2022 liweigang <liweiganga@uniontech.com> - 5.7.0.5-2
 - fix build error
 
