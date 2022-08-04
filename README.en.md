@@ -1,22 +1,20 @@
 # dde-calendar
 
 #### Description
-dde calendar
+dde calendar:Calculator is a powerful desktop calculator that supports standard mode, Scientific mode and Programmer mode. Perfect support for keyboard input, in the keyboard input also support symbol fault tolerance and calculation result linkage.
 
 #### Software Architecture
 Software architecture description
 
 #### Installation
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  dnf install dde-calendar
 
 #### Instructions
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  Select **standard ** to switch to the standard mode screen and perform basic addition, subtraction, multiplication and division operations.
+2.  Select  **science **, switch to the Science mode interface, and perform advanced operations such as functions, exponentials, and roots.
+3.   Select **programmer **, switch to programmer mode interface, perform binary, octal, decimal, hexadecimal and other complex operations.
 
 #### Contribution
 
