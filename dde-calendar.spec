@@ -7,20 +7,21 @@
 %endif
 
 Name:           dde-calendar
-Version:        5.8.10
+Version:        5.8.20.1
 
 Release:        %{specrelease}
 Summary:        Calendar is a smart daily planner to schedule all things in life
 License:        GPLv3
 URL:            https://github.com/linuxdeepin/dde-calendarr
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0:         0001-fix-build-error.patch
 
 BuildRequires: cmake
 BuildRequires: qt5-devel
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: dtkgui-devel
 BuildRequires: dtkwidget-devel
-BuildRequires: deepin-gettext-tools
+#BuildRequires: deepin-gettext-tools
 BuildRequires: pkgconfig(dframeworkdbus)
 BuildRequires: gtest-devel
 BuildRequires: gmock
@@ -29,13 +30,13 @@ BuildRequires: gmock
 %{summary}.
 
 %prep
-%autosetup
+%autosetup -p1
 
 %build
 export PATH=%{_qt5_bindir}:$PATH
 sed -i "s|^cmake_minimum_required.*|cmake_minimum_required(VERSION 3.0)|" $(find . -name "CMakeLists.txt")
 mkdir build && pushd build 
-%cmake -DCMAKE_BUILD_TYPE=Release ../  -DAPP_VERSION=%{version} -DVERSION=%{version} 
+%cmake -DCMAKE_BUILD_TYPE=Release ../  -DAPP_VERSION=%{version} -DVERSION=%{version} -DCMAKE_SCHEDULE_PLUGIN_OFF="OFF" 
 %make_build  
 popd
 
@@ -55,6 +56,9 @@ popd
 /usr/lib/deepin-daemon/dde-calendar-service
 
 %changelog
+* Mon Mar 27 2023 liweiganga <liweiganga@uniontech.com> - 5.8.20.1-1
+- update: update to 5.8.20.1
+
 * Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.8.10-1
 - update to 5.8.10
 
