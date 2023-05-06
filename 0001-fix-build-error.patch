@@ -1,0 +1,26 @@
+From bbbbe0a6f69f7ca4fba2275963fca948988feb2f Mon Sep 17 00:00:00 2001
+From: Super User <root@localhost.localdomain>
+Date: Mon, 27 Mar 2023 14:14:37 +0800
+Subject: [PATCH] fix build error
+
+---
+ tests/third-party_stub/stub.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tests/third-party_stub/stub.h b/tests/third-party_stub/stub.h
+index 76d6606..79bf963 100644
+--- a/tests/third-party_stub/stub.h
++++ b/tests/third-party_stub/stub.h
+@@ -16,6 +16,8 @@
+ #include <cstring>
+ //c++
+ #include <map>
++#include <iostream>
++using namespace std;
+ 
+ 
+ #define ADDR(CLASS_NAME,MEMBER_NAME) (&CLASS_NAME::MEMBER_NAME)
+-- 
+2.39.1
+
+
