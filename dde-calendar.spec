@@ -1,4 +1,4 @@
-%define pkgrelease  1
+%define pkgrelease  2
 %if 0%{?openeuler}
 %define specrelease %{pkgrelease}
 %else
@@ -14,6 +14,7 @@ Summary:        Calendar is a smart daily planner to schedule all things in life
 License:        GPLv3
 URL:            https://github.com/linuxdeepin/dde-calendarr
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0:         fix-clang.patch
 
 BuildRequires: cmake
 BuildRequires: qt5-devel
@@ -29,7 +30,7 @@ BuildRequires: gmock
 %{summary}.
 
 %prep
-%autosetup
+%autosetup -n %{name}-%{version} -p1
 
 %build
 export PATH=%{_qt5_bindir}:$PATH
@@ -55,6 +56,9 @@ popd
 /usr/lib/deepin-daemon/dde-calendar-service
 
 %changelog
+* Tue Jun 20 2023 yoo <sunyuechi@iscas.ac.cn> - 5.8.10-2
+- fix clang build error
+
 * Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.8.10-1
 - update to 5.8.10
 

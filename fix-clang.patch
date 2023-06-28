@@ -1,0 +1,77 @@
+diff -u -r dde-calendar-5.8.10/tests/dde-calendar-client-test/src/test_cscheduleoperation.cpp dde-calendar-5.8.10/tests/dde-calendar-client-test/src/test_cscheduleoperation.cpp
+--- dde-calendar-5.8.10/tests/dde-calendar-client-test/src/test_cscheduleoperation.cpp	2021-07-07 11:00:03.000000000 +0800
++++ dde-calendar-5.8.10/tests/dde-calendar-client-test/src/test_cscheduleoperation.cpp	2023-06-20 15:17:41.000000000 +0800
+@@ -113,8 +113,8 @@
+ 
+ TEST_F(test_cscheduleoperation, changeSchedule)
+ {
+-    typedef int (*fptr)(DCalendarDDialog *);
+-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
++		typedef std::function<int(DCalendarDDialog*)> fptr;
++		fptr A_foo = std::bind(&DCalendarDDialog::exec, std::placeholders::_1);
+     Stub_CScheduleDBus
+         stub.set(A_foo, exec_stub);
+     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
+@@ -163,8 +163,8 @@
+ 
+ TEST_F(test_cscheduleoperation, deleteSchedule)
+ {
+-    typedef int (*fptr)(DCalendarDDialog *);
+-    fptr A_foo = (fptr)(&DCalendarDDialog::exec);
++		typedef std::function<int(DCalendarDDialog*)> fptr;
++		fptr A_foo = std::bind(&DCalendarDDialog::exec, std::placeholders::_1);
+     Stub_CScheduleDBus
+         stub.set(A_foo, exec_stub);
+     stub.set(ADDR(CScheduleCtrlDlg, clickButton), clickButton_stub);
+diff -u -r dde-calendar-5.8.10/tests/third-party_stub/stub.h dde-calendar-5.8.10/tests/third-party_stub/stub.h
+--- dde-calendar-5.8.10/tests/third-party_stub/stub.h	2021-07-07 11:00:03.000000000 +0800
++++ dde-calendar-5.8.10/tests/third-party_stub/stub.h	2023-06-20 15:19:07.000000000 +0800
+@@ -144,8 +144,8 @@
+     {
+         char * fn;
+         char * fn_stub;
+-        fn = addrof(addr);
+-        fn_stub = addrof(addr_stub);
++        fn = addrof(&addr);
++        fn_stub = addrof(&addr_stub);
+         struct func_stub *pstub;
+         pstub = new func_stub;
+         //start
+@@ -198,7 +198,7 @@
+     void reset(T addr)
+     {
+         char * fn;
+-        fn = addrof(addr);
++        fn = addrof(&addr);
+         
+         std::map<char*,func_stub*>::iterator iter = m_result.find(fn);
+         
+@@ -252,17 +252,17 @@
+ #endif   
+     }
+ 
+-    template<typename T>
+-    char* addrof(T addr)
+-    {
+-        union 
+-        {
+-          T _s;
+-          char* _d;
+-        }ut;
+-        ut._s = addr;
+-        return ut._d;
+-    }
++		template<typename T>
++		char* addrof(T* addr)
++		{
++				union 
++				{
++					T* _s;
++					char* _d;
++				}ut;
++				ut._s = addr;
++				return ut._d;
++		}
+ 
+     bool distanceof(char* addr, char* addr_stub)
+     {
